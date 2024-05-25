@@ -9,7 +9,7 @@ def open_browser(chose_size_of_screen):
     driver = webdriver.FirefoxOptions()
     # driver_options.add_argument('--headless')
     browser.config.driver_options = driver
-    browser.config.type_by_js = True
+    # browser.config.type_by_js = True
     print("this is beginning of fixture - set up")
     yield
     browser.quit()
@@ -18,6 +18,6 @@ def open_browser(chose_size_of_screen):
 
 @pytest.fixture(scope="function")
 def chose_size_of_screen():
-    browser.config.window_height = 2000
-    browser.config.window_width = 2000
+    browser.config.window_height = 1000
+    browser.config.window_width = 1000
     print("prepare screen size - set up")
