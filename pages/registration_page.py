@@ -2,7 +2,7 @@ import os
 
 from selene import browser, be, have
 from selene.core.command import js, select_all
-
+import allure
 import tests
 
 
@@ -13,7 +13,8 @@ class RegistrationPage:
     def open(self):
         browser.open("/automation-practice-form")
 
-    def fill_first_name(self, first_name='Alexey'):
+    @allure.step("Insert first name")
+    def fill_first_name(self, first_name="Alexey"):
         browser.element("[id=firstName]").should(be.blank).type(first_name)
 
     def fill_last_name(self, last_name="Ostrovskiy"):
@@ -22,12 +23,12 @@ class RegistrationPage:
         )
 
     def fill_email(self, email="a.a.ostrovskiy@mail.ru"):
-        browser.element("[id=userEmail]").should(be.blank).type(
-            email
-        )
+        browser.element("[id=userEmail]").should(be.blank).type(email)
 
     def select_gender(self, gender="Male"):
-        browser.all("[name=gender]").element_by(have.value(gender)).element("..").click()
+        browser.all("[name=gender]").element_by(have.value(gender)).element(
+            ".."
+        ).click()
         # male = browser.element('[id="gender-radio-1"]').should(be.present)
         # male.perform(command=js.click)
         # browser.element("[name=gender][value=Male]").click()
@@ -57,6 +58,7 @@ class RegistrationPage:
 
     def fill_hobby(self):
         browser.all(".custom-checkbox").element_by(have.text("Music")).click()
+
     # reading = browser.element('[id="hobbies-checkbox-2"]').should(be.present)
     # reading.perform(command=js.click)
     def dowload_file(self):
@@ -65,13 +67,16 @@ class RegistrationPage:
                 os.path.join(os.path.dirname(tests.__file__), "resources/me.jpg")
             )
         )
+
     def fill_address(self, address="Дачный проспект"):
         browser.element('[id="currentAddress"]').should(be.blank).type(address)
-    def fill_state(self, state= "NCR"):
+
+    def fill_state(self, state="NCR"):
         browser.element("#state").perform(command=js.scroll_into_view).click()
         browser.all("[id^=react-select][id*=option]").element_by(
             have.exact_text(state)
         ).click()
+
     def fill_city(self, city="Gurgaon"):
         browser.element(".css-1wa3eu0-placeholder").should(be.present).should(
             have.text("Select City")
@@ -79,9 +84,25 @@ class RegistrationPage:
         browser.all("[id^=react-select][id*=option]").element_by(
             have.exact_text(city)
         ).click()
+
     def submit(self):
         browser.element('[id = "submit"]').should(be.present).perform(command=js.click)
-    def should_have_registered(self,first_name, last_name, email, gender, mobile_phone, date_of_birth, subject, hobby, image, address, state, city):
+
+    def should_have_registered(
+        self,
+        first_name,
+        last_name,
+        email,
+        gender,
+        mobile_phone,
+        date_of_birth,
+        subject,
+        hobby,
+        image,
+        address,
+        state,
+        city,
+    ):
         browser.element(".table").all("td").even.should(
             have.exact_texts(
                 f"{first_name} {last_name}",
@@ -96,4 +117,3 @@ class RegistrationPage:
                 f"{state} {city}",
             )
         )
-
